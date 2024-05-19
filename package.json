@@ -1,0 +1,22 @@
+{
+  "name": "vencimento",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "5.14.0",
+    "@types/node": "^20.12.12",
+    "axios": "^1.6.8",
+    "nodemailer": "^6.9.13",
+    "prisma": "^5.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.15"
+  }
+}

@@ -1,0 +1,68 @@
+import 'dotenv/config'
+import nodemailer from "nodemailer";
+
+/**
+ * Sends an email with the provided data.
+ *
+ * @param {any} dados - {id, vctoDias, nome, email, cnpj, cpf, razaosocial, telefone, telefone2}.
+ * @return {Promise<any>} - A promise that resolves to the result of sending the email or rejects with an error.
+ */
+export const SendEmail = async (dados: any) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'redebrasilrp@gmail.com',
+        pass: process.env.EMAILTOKEN,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    const emailOptions = {
+      from: 'redebrasilrp@gmail.com',
+      to: 'redebrasilrp@gmail.com, kingdever88@gmail.com',
+      subject: `Vencimento ${new Date().toLocaleDateString()}`,
+      html: `
+      <html>
+        <body>
+          <h1>Vencimento ${new Date().toLocaleDateString()}</h1>
+          <br/>
+          <br/>
+          <table style="border: 1px solid black; border-collapse: collapse;">
+            <tr style="border: 1px solid black; border-collapse: collapse; background-color: #7bf1a8">
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">titulo</th>
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">doc</th>
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">id</th>
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">Email</th>
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">Telefone</th>
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">Telefone2</th>
+              <th style="border: 1px solid black; border-collapse: collapse; text-align: center">vencimento</th>
+            </tr>
+            ${dados.map((item: any) => `
+              <tr>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.cnpj? item.razaosocial : item.nome}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.cnpj? item.cnpj : item.cpf}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.id}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.email.toLowerCase()}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.telefone}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.telefone2}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.vctoDias > 0?  `vencimento em: ${item.vctoDias} dia - ${new Date(item.vctoCD).toLocaleDateString()}` : `vencimento hoje - ${new Date(item.vctoCD).toLocaleDateString()}`}</td>
+              </tr>
+            `).join('')}
+          </table>
+        </body>
+      </html>
+      `,
+    };
+
+    const emailResult = await transporter.sendMail(emailOptions); 
+    return emailResult;
+  } catch (error) {
+    console.error("Erro ao enviar email:", error);
+    return error;
+  }
+}
