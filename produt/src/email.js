@@ -12,7 +12,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
  * @param {any} dados - {id, vctoDias, nome, email, cnpj, cpf, razaosocial, telefone, telefone2}.
  * @return {Promise<any>} - A promise that resolves to the result of sending the email or rejects with an error.
  */
-const SendEmail = async (dados) => {
+const SendEmail = async (dados, concluido) => {
     try {
         const transporter = nodemailer_1.default.createTransport({
             host: 'smtp.gmail.com',
@@ -53,11 +53,17 @@ const SendEmail = async (dados) => {
                 <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.id}</td>
                 <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.email.toLowerCase()}</td>
                 <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.telefone}</td>
-                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.telefone2}</td>
+                <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.telefone2.replace(/\D/g, '')}</td>
                 <td style="border: 1px solid black; border-collapse: collapse; padding: 0px 5px">${item.vctoDias > 0 ? `vencimento em: ${item.vctoDias} dia - ${new Date(item.vctoCD).toLocaleDateString()}` : `vencimento hoje - ${new Date(item.vctoCD).toLocaleDateString()}`}</td>
               </tr>
             `).join('')}
           </table>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <p>Total de contatos com mensagem enviada: ${concluido}</p>
+          <p>Contatos com erro: ${dados.length}</p>
         </body>
       </html>
       `,

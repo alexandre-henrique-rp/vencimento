@@ -175,10 +175,10 @@ model erp {
   Ie            String?   @db.VarChar(100)
   tel           String?   @db.VarChar(100)
   whatsapp      String    @db.VarChar(100)
-  a1pf          Int
-  a3pf          Int?
-  a1pj          Int
-  a3pj          Int?
+  a1pf          Float     @db.Float
+  a3pf          Float?    @db.Float
+  a1pj          Float     @db.Float
+  a3pj          Float?    @db.Float
   status        Int
   regime        String?   @db.VarChar(100)
   createdAt     DateTime  @default(now())
@@ -188,7 +188,8 @@ model erp {
   simples       String?   @db.VarChar(100)
   unidade       String?   @db.VarChar(100)
   authorization String?   @db.VarChar(100)
-  repasse       Int?
+  repasse       Float?    @db.Float
+  val_venda     Float?    @db.Float
 }
 
 model erp_log {
@@ -531,4 +532,41 @@ model voucher {
   estatos    String @db.VarChar(150)
   dt_resgate Int
   id_fcw     String @db.VarChar(150)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model metadata {
+  id        Int       @id @default(autoincrement())
+  nome      String    @unique(map: "metadata_unique") @db.VarChar(100)
+  valor     String    @db.VarChar(100)
+  creatdAt  DateTime  @default(now()) @db.DateTime(0)
+  updatedAt DateTime? @db.Date
+}
+
+model solicitacoes_certificado {
+  id               Int      @id @default(autoincrement())
+  nome_completo    String   @db.VarChar(255)
+  cpf              String   @db.VarChar(14)
+  email            String   @db.VarChar(255)
+  data_solicitacao DateTime @default(now()) @db.Timestamp(0)
+  nome_corretor    String   @db.VarChar(255)
+  construtora      String   @db.VarChar(100)
+  telefone         String   @db.VarChar(10)
+  data_nascimento  DateTime @db.Date
+  andamento        String?  @db.VarChar(255)
+  cef              String?  @db.VarChar(255)
+  contrato         String?  @db.VarChar(255)
+}
+
+model users2 {
+  id             Int     @id @default(autoincrement())
+  username       String  @unique(map: "username") @db.VarChar(50)
+  password       String  @db.VarChar(50)
+  telefone       String? @db.VarChar(20)
+  email          String? @db.VarChar(100)
+  cpf            String? @db.VarChar(14)
+  nome           String? @db.VarChar(100)
+  empreendimento String? @db.VarChar(100)
+  construtora    String? @db.VarChar(100)
+  cargo          String? @db.VarChar(50)
 }

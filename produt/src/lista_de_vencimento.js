@@ -8,6 +8,7 @@ async function ListaDeVencimento(dias) {
         where: {
             vctoCD: `${data}T00:00:00.000Z`,
             estatos_pgto: 'Pago',
+            s_alerta: 'ATIVADO',
             id_fcw_soluti: {
                 not: ""
             },

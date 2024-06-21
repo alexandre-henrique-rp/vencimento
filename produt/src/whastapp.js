@@ -26,8 +26,9 @@ const VerificarWhatsapp = async (tel) => {
         return request.data;
     }
     catch (error) {
-        console.log(error.data);
-        return error.data;
+        const erroData = Object.assign(Object.assign({}, error.data), { telefone: tel });
+        console.log(erroData);
+        return erroData;
     }
 };
 exports.VerificarWhatsapp = VerificarWhatsapp;

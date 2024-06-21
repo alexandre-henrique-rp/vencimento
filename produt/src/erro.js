@@ -10,17 +10,25 @@ const prisma = new client_1.PrismaClient();
  */
 async function ErroSave(dados) {
     try {
+        const Tel2 = dados.telefone2.replace(/\D/g, '') === '' ? '' : ` - ${dados.telefone2.replace(/\D/g, '')}`;
         const data = {
-            ref: dados.id.toString(),
-            log: `${dados.telefone}${!!dados.telefone2 && `, ${dados.telefone2}`}`,
-            dia: dados.vctoDias > 0 ? `vencimento em: ${dados.vctoDias} dia` : 'vencimento hoje',
-            titulo: !!dados.cnpj ? dados.razaosocial : dados.nome,
-            email: dados.email,
-            doc: !!dados.cnpj ? dados.cnpj : dados.cpf,
+            data: {
+                ref: dados.id.toString(),
+                log: `${dados.telefone}${Tel2}`,
+                dia: dados.vctoDias > 0
+                    ? `vencimento em: ${dados.vctoDias} dia`
+                    : "vencimento hoje",
+                titulo: !!dados.cnpj ? dados.razaosocial : dados.nome,
+                email: dados.email,
+                doc: !!dados.cnpj ? dados.cnpj : dados.cpf,
+                updatedAt: new Date().toISOString(),
+            },
         };
-        return await prisma.log_error.create(data);
+        const result = await prisma.log_error.create(data);
+        return result;
     }
     catch (error) {
+        console.log(error);
         return error.data;
     }
 }

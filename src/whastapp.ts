@@ -22,8 +22,12 @@ export const VerificarWhatsapp = async (tel: string): Promise<any> => {
     
     return request.data
   } catch (error: any) {
-    console.log(error.data)
-    return error.data
+    const erroData = {
+      ...error.data,
+      telefone: tel
+    }
+    console.log(erroData)
+    return erroData
   }
 };
 
